@@ -1,114 +1,73 @@
 import os
-import sys
+import numpy as np
+from src.logger import logging
 from dataclasses import dataclass
-
-from sklearn.ensemble import (
-    AdaBoostRegressor,
-    GradientBoostingRegressor,
-    RandomForestRegressor,
-)
-from sklearn.linear_model import LinearRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.svm import SVC
+from sklearn.linear_model import LogisticRegression
+from src.utils import evaluate_models
 from sklearn.metrics import r2_score
-from sklearn.neighbors import KNeighborsRegressor
-from sklearn.tree import DecisionTreeRegressor
-from xgboost import XGBRegressor 
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 from src.exception import CustomException
 from src.logger import logging
-
 from src.utils import save_object
-
 @dataclass
 class ModelTrainerConfig:
-    trained_model_file_path=os.path.join("artifacts","model.pkl")
+    trained_model_file_path = os.path.join("artifacts", "model.pkl")
 
 class ModelTrainer:
     def __init__(self):
-        self.model_trainer_config=ModelTrainerConfig()
+        self.model_trainer_config = ModelTrainerConfig()
 
-
-    def initiate_model_trainer(self,train_array,test_array):
+    def initiate_model_trainer(self, train_array, test_array):
         try:
-            logging.info("Split training and test input data")
-            
-            X_train,y_train,X_test,y_test=(
-                train_array[:,:-1],
-                train_array[:,-1],
-                test_array[:,:-1],
-                test_array[:,-1]
-            )
-            
-            print (X_train,y_train,X_test,y_test)
-            # models = {
-            #     "Random Forest": RandomForestRegressor(),
-            #     "Decision Tree": DecisionTreeRegressor(),
-            #     "Gradient Boosting": GradientBoostingRegressor(),
-            #     "Linear Regression": LinearRegression(),
-            #     "XGBRegressor": XGBRegressor(),
-            #     "AdaBoost Regressor": AdaBoostRegressor(),
-            # }
-            # params={
-            #     "Decision Tree": {
-            #         'criterion':['squared_error', 'friedman_mse', 'absolute_error', 'poisson'],
-            #         # 'splitter':['best','random'],
-            #         # 'max_features':['sqrt','log2'],
-            #     },
-            #     "Random Forest":{
-            #         # 'criterion':['squared_error', 'friedman_mse', 'absolute_error', 'poisson'],
-                 
-            #         # 'max_features':['sqrt','log2',None],
-            #         'n_estimators': [8,16,32,64,128,256]
-            #     },
-            #     "Gradient Boosting":{
-            #         # 'loss':['squared_error', 'huber', 'absolute_error', 'quantile'],
-            #         'learning_rate':[.1,.01,.05,.001],
-            #         'subsample':[0.6,0.7,0.75,0.8,0.85,0.9],
-            #         # 'criterion':['squared_error', 'friedman_mse'],
-            #         # 'max_features':['auto','sqrt','log2'],
-            #         'n_estimators': [8,16,32,64,128,256]
-            #     },
-            #     "Linear Regression":{},
-            #     "XGBRegressor":{
-            #         'learning_rate':[.1,.01,.05,.001],
-            #         'n_estimators': [8,16,32,64,128,256]
-            #     },
-            #     "AdaBoost Regressor":{
-            #         'learning_rate':[.1,.01,0.5,.001],
-            #         # 'loss':['linear','square','exponential'],
-            #         'n_estimators': [8,16,32,64,128,256]
-            #     }
-                
-            # }
-            
-            # model_report:dict=evaluate_models(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,models=models,param=params)
-            
-            # ## To get best model score from dict
-            # best_model_score = max(sorted(model_report.values()))
+            logging.info("Splitting training and test input data")
 
-            # ## To get best model name from dict
+            # The last column is 'Sleep Disorder'
+            X_train = train_array[:, :-1]  # All columns except the last one
+            y_train = train_array[:, -1]   # Last column (target variable)
+            X_test = test_array[:, :-1]    # All columns except the last one
+            y_test = test_array[:, -1]     # Last column (target variable)
 
-            # best_model_name = list(model_report.keys())[
-            #     list(model_report.values()).index(best_model_score)
-            # ]
-            # best_model = models[best_model_name]
-
+            logging.info("Data splitting completed successfully")
+            
+            classification_models = {
+                "Decision Tree Classifier": DecisionTreeClassifier(),
+                "Random Forest Classifier": RandomForestClassifier(),
+                "Gradient Boosting Classifier": GradientBoostingClassifier(),
+                "K-Neighbors Classifier": KNeighborsClassifier(),
+                "SVC": SVC(),
+                "Logistic Regression": LogisticRegression()
+            }
+            
+            model_report:dict=evaluate_models(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,
+                                             models=classification_models)
+            
+            best_model_score = max(sorted(model_report.values()))
+            
+            best_model_name = list(model_report.keys())[
+                list(model_report.values()).index(best_model_score)
+            ]
+            best_model = classification_models[best_model_name]
+            
             # if best_model_score<0.6:
             #     raise CustomException("No best model found")
-            # logging.info(f"Best found model on both training and testing dataset")
-
-            # save_object(
-            #     file_path=self.model_trainer_config.trained_model_file_path,
-            #     obj=best_model
-            # )
-
-            # predicted=best_model.predict(X_test)
-
-            # r2_square = r2_score(y_test, predicted)
-            # return r2_square
-            return X_train,y_train,X_test,y_test
-
-
-
+            logging.info("Best found model on both training and testing dataset")
             
+            save_object(
+                file_path=self.model_trainer_config.trained_model_file_path,
+                obj=best_model
+            )
+            
+            predicted=best_model.predict(X_test)
+            r2_square = r2_score(y_test,predicted)
+            f1 = f1_score(y_test,predicted,average='weighted')
+            return r2_square,f1
+        
+        
         except Exception as e:
-            raise CustomException(e,sys)
+            logging.error(f"Error occurred: {e}")
+            raise

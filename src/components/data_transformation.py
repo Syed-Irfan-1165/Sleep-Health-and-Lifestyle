@@ -110,11 +110,11 @@ class DataTransformation:
             train_df = pd.read_csv(train_data_path)
             test_df = pd.read_csv(test_data_path)
             logging.info("Reading train and test data completed")
-            
             logging.info("Obtaining preprocessing object")
-            print("Train DataFrame Columns:", train_df.columns)
-            print("Test DataFrame Columns:", test_df.columns)
-
+            # print("Train DataFrame Columns:", train_df.columns)
+            # print("Test DataFrame Columns:", test_df.columns)
+            preprocessing_obj = self.get_data_transformer_object()
+            
             for df in [train_df, test_df]:
                 if 'Blood Pressure' in df.columns:
                     df[['High_BP', 'Low_BP']] = df['Blood Pressure'].str.split('/', expand=True).astype(float)
@@ -122,27 +122,33 @@ class DataTransformation:
                 else:
                     raise ValueError("Column 'Blood Pressure' not found in the DataFrame.")
 
-            X_train = train_df.drop(columns=['Person ID', 'Sleep Disorder'])
-            y_train = train_df['Sleep Disorder']
+            X_train = train_df.drop(columns=['Person ID', 'Sleep Disorder']) #(input_feature_train_df)
+            print(X_train)
+            y_train = train_df['Sleep Disorder']  #(target_feature_train_df)
+            print(y_train)
             
-            X_test = test_df.drop(columns=['Person ID', 'Sleep Disorder'])
-            y_test = test_df['Sleep Disorder']
+            X_test = test_df.drop(columns=['Person ID', 'Sleep Disorder']) #(input_feature_test_df)
+            y_test = test_df['Sleep Disorder'] #(target_feature_test_df)
 
             label_encoder = LabelEncoder()
             y_train = label_encoder.fit_transform(y_train)
             y_test = label_encoder.transform(y_test)
 
-            preprocessing_obj = self.get_data_transformer_object()
+            
             logging.info(
                 f"Applying preprocessing object on training dataframe and testing dataframe."
             )
-            print("X_train Columns before transformation:", X_train.columns)
-            X_train_transformed = preprocessing_obj.fit_transform(X_train)
-            print("X_train after transformation:", X_train)
-            X_test_transformed = preprocessing_obj.transform(X_test)
-            
-            print("X_train_transformed shape:", X_train_transformed.shape)
-            print("X_test_transformed shape:", X_test_transformed.shape)
+            # print("X_train Columns before transformation:", X_train.columns)
+            X_train_transformed = preprocessing_obj.fit_transform(X_train)  #(input_feature_train_arr)
+            # print("X_train after transformation:", X_train)
+            X_test_transformed = preprocessing_obj.transform(X_test)  #(input_feature_test_arr)
+            train_arr = np.c_[
+                X_train_transformed, np.array(y_train)
+            ]
+            test_arr = np.c_[X_test_transformed, np.array(y_test)]
+
+            # print("X_train_transformed shape:", X_train_transformed.shape)
+            # print("X_test_transformed shape:", X_test_transformed.shape)
             
             logging.info(f"Saving preprocessing object.")
             
@@ -152,7 +158,7 @@ class DataTransformation:
                 obj=preprocessing_obj
             )
 
-            return X_train_transformed, X_test_transformed, y_train, y_test, preprocessing_obj
+            return train_arr, test_arr, self.data_transformation_config.preprocessor_obj_file_path
             
         except Exception as e:
             raise CustomException(e, sys)
