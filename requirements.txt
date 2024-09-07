@@ -120,4 +120,5 @@ widgetsnbextension==4.0.13
 xgboost==2.1.1
 xyzservices==2024.6.0
 dill
+flask
 # -e .

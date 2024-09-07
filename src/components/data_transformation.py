@@ -108,12 +108,25 @@ class DataTransformation:
     def initiate_data_transformation(self, train_data_path: str, test_data_path: str):
         try:
             train_df = pd.read_csv(train_data_path)
+            print(train_df['Sleep Disorder'].unique())
             test_df = pd.read_csv(test_data_path)
             logging.info("Reading train and test data completed")
             logging.info("Obtaining preprocessing object")
+        
             # print("Train DataFrame Columns:", train_df.columns)
             # print("Test DataFrame Columns:", test_df.columns)
             preprocessing_obj = self.get_data_transformer_object()
+            
+            # Convert 'none' to 'No sleep disorder' in the target column
+            for df in [train_df, test_df]:
+                if 'Sleep Disorder' in df.columns:
+                    df['Sleep Disorder'] = df['Sleep Disorder'].fillna('No sleep disorder')
+                else:
+                    raise ValueError("Column 'Sleep Disorder' not found in the DataFrame.")
+            logging.info('Converted NaN to "No sleep disorder" in target column')
+
+            print(train_df['Sleep Disorder'].unique())
+            print(test_df['Sleep Disorder'].unique())
             
             for df in [train_df, test_df]:
                 if 'Blood Pressure' in df.columns:
@@ -123,17 +136,17 @@ class DataTransformation:
                     raise ValueError("Column 'Blood Pressure' not found in the DataFrame.")
 
             X_train = train_df.drop(columns=['Person ID', 'Sleep Disorder']) #(input_feature_train_df)
-            print(X_train)
+            # print(X_train)
             y_train = train_df['Sleep Disorder']  #(target_feature_train_df)
-            print(y_train)
+            # print(y_train)
             
             X_test = test_df.drop(columns=['Person ID', 'Sleep Disorder']) #(input_feature_test_df)
             y_test = test_df['Sleep Disorder'] #(target_feature_test_df)
-
+            print(y_test)
             label_encoder = LabelEncoder()
             y_train = label_encoder.fit_transform(y_train)
             y_test = label_encoder.transform(y_test)
-
+            print(y_test)
             
             logging.info(
                 f"Applying preprocessing object on training dataframe and testing dataframe."

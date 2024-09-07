@@ -9,8 +9,9 @@ from src.exception import CustomException
 from src.logger import logging
 from dataclasses import dataclass
 
-from src.components.data_transformation import DataTransformation, DataTransformationConfig
-from src.components.model_trainer import ModelTrainer, ModelTrainerConfig
+from src.components.data_transformation import DataTransformation
+from src.components.model_trainer import ModelTrainer
+from src.components import model_trainer
 @dataclass
 class DataIngestionConfig:
     train_data_path: str = os.path.join('artifacts', 'train.csv')
@@ -34,7 +35,7 @@ class DataIngestion:
             logging.info(f'Raw data saved to {self.ingestion_config.raw_data_path}')
             
             logging.info("Performing train-test split")
-            train_set, test_set = train_test_split(df, train_size=0.2, random_state=42)
+            train_set, test_set = train_test_split(df, test_size=0.2, random_state=2)
             
             train_set.to_csv(self.ingestion_config.train_data_path, index=False, header=True)
             test_set.to_csv(self.ingestion_config.test_data_path, index=False, header=True)
@@ -62,5 +63,7 @@ if __name__ == "__main__":
     #     pickle.dump(preprocessing_obj, file)
     # logging.info(f'Preprocessing object saved to {preprocessing_obj_path}')
     
-    modeltrainer=ModelTrainer()
-    print(modeltrainer.initiate_model_trainer(train_arr,test_arr))
+    model_trainer = ModelTrainer()  # Create an instance of the ModelTrainer class
+    model_metrics = model_trainer.initiate_model_trainer(train_arr, test_arr)  # Call the method using the instance
+    print(model_metrics)
+        

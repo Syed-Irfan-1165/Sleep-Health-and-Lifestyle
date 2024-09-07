@@ -43,29 +43,41 @@ class ModelTrainer:
                 "Logistic Regression": LogisticRegression()
             }
             
-            model_report:dict=evaluate_models(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,
-                                             models=classification_models)
+            logging.info("Evaluating classification models")
+            model_report:dict=evaluate_models(
+                X_train=X_train,
+                y_train=y_train,
+                X_test=X_test,
+                y_test=y_test,
+                models=classification_models
+            )
             
-            best_model_score = max(sorted(model_report.values()))
+            best_model_score = max(model_report.values())
             
-            best_model_name = list(model_report.keys())[
-                list(model_report.values()).index(best_model_score)
-            ]
+            best_model_name = max(model_report,key=model_report.get)
+            
             best_model = classification_models[best_model_name]
             
             # if best_model_score<0.6:
             #     raise CustomException("No best model found")
-            logging.info("Best found model on both training and testing dataset")
+            logging.info(f"Best found model: {best_model_name} with F1 Score: {best_model_score}")
+            
+            best_model.fit(X_train, y_train)
             
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,
                 obj=best_model
             )
+            logging.info(f"Best model saved to {self.model_trainer_config.trained_model_file_path}")
             
-            predicted=best_model.predict(X_test)
-            r2_square = r2_score(y_test,predicted)
-            f1 = f1_score(y_test,predicted,average='weighted')
-            return r2_square,f1
+            y_pred = best_model.predict(X_test)
+            accuracy = accuracy_score(y_test, y_pred)
+            precision = precision_score(y_test, y_pred, average='weighted', zero_division=0)
+            recall = recall_score(y_test, y_pred, average='weighted', zero_division=0)
+            f1 = f1_score(y_test, y_pred, average='weighted', zero_division=0)
+            # r2 = r2_score(y_test, y_pred)
+            logging.info(f"Model Evaluation Metrics - Accuracy: {accuracy}, Precision: {precision}, Recall: {recall}, F1 Score: {f1},")
+            return {"accuracy": accuracy, "precision": precision, "recall": recall, "f1_score": f1}
         
         
         except Exception as e:

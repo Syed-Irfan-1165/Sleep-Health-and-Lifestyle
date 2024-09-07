@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleep Health & Lifestyle Prediction</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Sleep Health & Lifestyle Prediction</h1>
+        <form action="{{ url_for('predict_datapoint')}}" method="post">
+            <h2>Enter Your Details</h2>
+
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select class="form-control" id="gender" name="gender" required>
+                    <option class="placeholder" selected disabled value="">Select your Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input class="form-control" type="number" id="age" name="age" placeholder="Enter your age" min="0" required />
+            </div>
+
+            <div class="form-group">
+                <label for="occupation">Occupation</label>
+                <select class="form-control" id="occupation" name="occupation" required>
+                    <option class="placeholder" selected disabled value="">Select your Occupation</option>
+                    <option value="Doctor">Doctor</option>
+                    <option value="Nurse">Nurse</option>
+                    <option value="Salesperson">Salesperson</option>
+                    <option value="Software Engineer">Software Engineer</option>
+                    <option value="Teacher">Teacher</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="sleep_duration">Sleep Duration (hours)</label>
+                <input class="form-control" type="number" id="sleep_duration" name="sleep_duration" step="0.1" placeholder="Enter your Sleep Duration" min="0" max="24" required />
+            </div>
+
+            <div class="form-group">
+                <label for="quality_of_sleep">Quality of Sleep (1-10)</label>
+                <input class="form-control" type="number" id="quality_of_sleep" name="quality_of_sleep" step="1" placeholder="Rate your Sleep Quality" min="1" max="10" required />
+            </div>
+
+            <div class="form-group">
+                <label for="physical_activity_level">Physical Activity Level (1-100)</label>
+                <input class="form-control" type="number" id="physical_activity_level" name="physical_activity_level" placeholder="Enter your Physical Activity Level" min="0" max="100" required />
+            </div>
+
+            <div class="form-group">
+                <label for="stress_level">Stress Level (1-10)</label>
+                <input class="form-control" type="number" id="stress_level" name="stress_level" step="1" placeholder="Rate your Stress Level" min="1" max="10" required />
+            </div>
+
+            <div class="form-group">
+                <label for="bmi_category">BMI Category</label>
+                <select class="form-control" id="bmi_category" name="bmi_category" required>
+                    <option class="placeholder" selected disabled value="">Select your BMI Category</option>
+                    <option value="Underweight">Underweight</option>
+                    <option value="Normal">Normal</option>
+                    <option value="Overweight">Overweight</option>
+                    <option value="Obese">Obese</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="heart_rate">Heart Rate (BPM)</label>
+                <input class="form-control" type="number" id="heart_rate" name="heart_rate" step="1" placeholder="Enter your Heart Rate (BPM)" required />
+            </div>
+
+            <div class="form-group">
+                <label for="daily_steps">Daily Steps</label>
+                <input class="form-control" type="number" id="daily_steps" name="daily_steps" placeholder="Enter your Daily Steps" required />
+            </div>
+
+            <div class="form-group">
+                <label for="high_bp">High Blood Pressure (mm Hg)</label>
+                <input class="form-control" type="number" id="high_bp" name="high_bp" placeholder="Enter your High BP (systolic)" required />
+            </div>
+
+            <div class="form-group">
+                <label for="low_bp">Low Blood Pressure (mm Hg)</label>
+                <input class="form-control" type="number" id="low_bp" name="low_bp" placeholder="Enter your Low BP (diastolic)" required />
+            </div>
+
+            <div class="form-group">
+                <input class="btn btn-primary" type="submit" value="Predict Sleep Disorder" />
+            </div>
+        </form>
+
+        <h2>
+           The prediction is: {{results}}
+        </h2>
+    </div>
+</body>
+</html>
