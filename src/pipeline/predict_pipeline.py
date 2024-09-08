@@ -36,8 +36,8 @@ class CustomData:
                  Stress_Level: int,
                  Heart_Rate: int,
                  Daily_Steps:int,
-                 High_BP:int,
-                 Low_BP:int):
+                 Systolic_BP:int,
+                 Diastolic_BP:int):
 
                 self.Gender = Gender
                 
@@ -59,9 +59,9 @@ class CustomData:
                 
                 self.Daily_Steps = Daily_Steps
                 
-                self.High_BP = High_BP
+                self.Systolic_BP = Systolic_BP
                 
-                self.Low_BP = Low_BP
+                self.Diastolic_BP = Diastolic_BP
                 
     def get_data_as_data_frame(self):
         try:
@@ -76,8 +76,8 @@ class CustomData:
                 "Stress_Level":[self.Stress_Level],
                 "Heart_Rate":[self.Heart_Rate],
                 "Daily_Steps":[self.Daily_Steps],
-                "High_BP":[self.High_BP],
-                "Low_BP":[self.Low_BP],
+                "Systolic_BP":[self.Systolic_BP],
+                "Diastolic_BP":[self.Diastolic_BP],
                 
             }
             return pd.DataFrame(custom_data_input_dict)

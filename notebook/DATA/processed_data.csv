@@ -1,4 +1,4 @@
-Person ID,Gender,Age,Occupation,Sleep Duration,Quality of Sleep,Physical Activity Level,Stress Level,BMI Category,Heart Rate,Daily Steps,Sleep Disorder,High_BP,Low_BP
+Person ID,Gender,Age,Occupation,Sleep Duration,Quality of Sleep,Physical Activity Level,Stress Level,BMI Category,Heart Rate,Daily Steps,Sleep Disorder,Systolic_BP,Diastolic_BP
 1,Male,27,Software Engineer,6.1,6,42,6,Overweight,77,4200,No Sleep Disorder,126.0,83.0
 2,Male,28,Doctor,6.2,6,60,8,Normal,75,10000,No Sleep Disorder,125.0,80.0
 3,Male,28,Doctor,6.2,6,60,8,Normal,75,10000,No Sleep Disorder,125.0,80.0

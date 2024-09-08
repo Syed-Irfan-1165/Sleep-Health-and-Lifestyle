@@ -24,7 +24,7 @@ class OutlierHandler(BaseEstimator, TransformerMixin):
     def transform(self, X, y=None):
         if isinstance(X, np.ndarray):
             X = pd.DataFrame(X, columns=['Age', 'Sleep Duration', 'Quality of Sleep', 'Physical Activity Level',
-                                         'Stress Level', 'Heart Rate', 'Daily Steps', 'High_BP', 'Low_BP'])
+                                         'Stress Level', 'Heart Rate', 'Daily Steps', 'Systolic_BP', 'Diastolic_BP'])
         
         for col in X.columns:
             if X[col].dtype in [np.float64, np.int64]:
@@ -59,7 +59,7 @@ class DataTransformation:
     def get_data_transformer_object(self):
         try:
             numerical_cols = ['Age', 'Sleep Duration', 'Quality of Sleep', 'Physical Activity Level',
-                              'Stress Level', 'Heart Rate', 'Daily Steps', 'High_BP', 'Low_BP']
+                              'Stress Level', 'Heart Rate', 'Daily Steps', 'Systolic_BP', 'Diastolic_BP']
             categorical_cols = ['Gender', 'Occupation', 'BMI Category']
 
             def replace_normal_weight(X):
@@ -130,7 +130,7 @@ class DataTransformation:
             
             for df in [train_df, test_df]:
                 if 'Blood Pressure' in df.columns:
-                    df[['High_BP', 'Low_BP']] = df['Blood Pressure'].str.split('/', expand=True).astype(float)
+                    df[['Systolic_BP', 'Diastolic_BP']] = df['Blood Pressure'].str.split('/', expand=True).astype(float)
                     df.drop('Blood Pressure', axis=1, inplace=True)
                 else:
                     raise ValueError("Column 'Blood Pressure' not found in the DataFrame.")

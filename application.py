@@ -32,15 +32,15 @@ def predict_datapoint():
             Stress_Level=request.form.get('stress_level'),
             Heart_Rate=request.form.get('heart_rate'),
             Daily_Steps=request.form.get('daily_steps'),
-            High_BP=request.form.get('high_bp'),
-            Low_BP=request.form.get('low_bp')
+            Systolic_BP=request.form.get('systolic_bp'),
+            Diastolic_BP=request.form.get('diastolic_bp')
         )
 
 
         pred_df=data.get_data_as_data_frame()
         pred_df.columns = ['Gender', 'Occupation', 'BMI Category', 'Age', 'Sleep Duration',
                            'Quality of Sleep', 'Physical Activity Level', 'Stress Level',
-                           'Heart Rate', 'Daily Steps', 'High_BP', 'Low_BP']
+                           'Heart Rate', 'Daily Steps', 'Systolic_BP', 'Diastolic_BP']
         # Check the column names in your dataframe (for debugging)
         print("Actual column names:", pred_df.columns)
         # print(pred_df)
