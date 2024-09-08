@@ -1,10 +1,7 @@
 import os
 import sys
 
-import pandas as pd
-import numpy as np
 import dill
-import pickle
 from sklearn.metrics import r2_score,f1_score, accuracy_score, precision_score, recall_score
 from src.logger import logging
 

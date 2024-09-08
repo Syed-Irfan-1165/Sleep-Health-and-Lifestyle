@@ -10,6 +10,7 @@ application=Flask(__name__)
 
 app=application
 
+sleep_disorder_labels = {0: 'Insomnia', 1: 'No Sleep Disorder', 2: 'Sleep Apnea'}
 
 @app.route('/')
 def index():
@@ -46,8 +47,9 @@ def predict_datapoint():
         
         predict_pipeline=PredictPipeline()
         try:
-            results = predict_pipeline.predict(pred_df)
-            return render_template('home.html', results=results[0])
+            predict_pipeline = predict_pipeline.predict(pred_df)
+            results = sleep_disorder_labels.get(predict_pipeline[0], "Unknown Disorder")
+            return render_template('home.html', results=results)
         except Exception as e:
             # Handle and print any errors that occur during prediction
             print(f"Error during prediction: {str(e)}")

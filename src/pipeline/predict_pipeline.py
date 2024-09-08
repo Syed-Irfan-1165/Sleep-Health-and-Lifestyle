@@ -7,17 +7,17 @@ from src.utils import load_object
 
 class PredictPipeline:
     def __init__(self):
+        self.model_path = os.path.join('artifacts', 'model.pkl')
+        self.preprocessor_path = os.path.join('artifacts', 'preprocessor.pkl')
         pass
     
 
     def predict(self,features):
         try:
-            model_path=os.path.join("/Users/syed/Documents/Sleep-Health-and-Lifestyle/artifacts/model.pkl")
-            preprocessor_path=os.path.join('/Users/syed/Documents/Sleep-Health-and-Lifestyle/artifacts/preprocessor.pkl')
-            print("Before Loading")
-            model=load_object(file_path=model_path)
-            preprocessor=load_object(file_path=preprocessor_path)
-            print("After Loading")
+            print("Before Loading model and preprocessor")
+            model=load_object(file_path=self.model_path)
+            preprocessor=load_object(file_path=self.preprocessor_path)
+            print("After Loading model and preprocessor")
             data_scaled=preprocessor.transform(features)
             preds=model.predict(data_scaled)
             return preds
@@ -36,8 +36,8 @@ class CustomData:
                  Stress_Level: int,
                  Heart_Rate: int,
                  Daily_Steps:int,
-                 High_BP:float,
-                 Low_BP:float):
+                 High_BP:int,
+                 Low_BP:int):
 
                 self.Gender = Gender
                 

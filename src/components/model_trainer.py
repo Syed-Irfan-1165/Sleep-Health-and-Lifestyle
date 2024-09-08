@@ -68,6 +68,9 @@ class ModelTrainer:
                 file_path=self.model_trainer_config.trained_model_file_path,
                 obj=best_model
             )
+            print("Model saved at:", self.model_trainer_config.trained_model_file_path)
+            print("Best model details:", best_model)
+
             logging.info(f"Best model saved to {self.model_trainer_config.trained_model_file_path}")
             
             y_pred = best_model.predict(X_test)

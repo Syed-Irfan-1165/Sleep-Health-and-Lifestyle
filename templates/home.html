@@ -5,6 +5,100 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sleep Health & Lifestyle Prediction</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lucida+Handwriting&display=swap');
+
+        body {
+            font-family: 'Lucida Handwriting', cursive;
+            background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), 
+                        linear-gradient(to bottom, rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%),
+                        linear-gradient(135deg, #670d10 0%,#092756 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 2px rgba(255,255,255,0.2);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            font-size: 1.5rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .form-control {
+            border-radius: 4px;
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+            border: 1px solid rgba(0,0,0,0.3);
+            box-shadow: inset 0 -5px 45px rgba(100,100,100,0.2), 0 1px 1px rgba(255,255,255,0.2);
+        }
+
+        .form-control:focus {
+            border-color: #4a77d4;
+            background: rgba(0,0,0,0.4); /* Keep background color same on focus */
+            box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgba(255,255,255,0.2);
+        }
+
+        .btn-primary {
+            background-color: #4a77d4;
+            border-color: #3762bc;
+            padding: 0.5rem 1rem;
+            font-size: 1.2rem;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #4a77d4;
+        }
+
+        .form-group input[type="submit"] {
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .prediction {
+            text-align: center;
+            padding-top: 1rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #4a77d4;
+        }
+
+        /* Hover effect for all form controls */
+        .form-control:hover {
+            background-color: rgba(0,0,0,0.4);
+            cursor: pointer;
+        }
+
+        /* Hover effect for all select options */
+        select:hover {
+            background-color: rgba(0,0,0,0.4);
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -30,9 +124,15 @@
                 <label for="occupation">Occupation</label>
                 <select class="form-control" id="occupation" name="occupation" required>
                     <option class="placeholder" selected disabled value="">Select your Occupation</option>
+                    <option value="Accountant">Accountant</option>
                     <option value="Doctor">Doctor</option>
+                    <option value="Engineer">Engineer</option>
+                    <option value="Lawyer">Lawyer</option>
+                    <option value="Manager">Manager</option>
                     <option value="Nurse">Nurse</option>
+                    <option value="Sales Representative">Sales Representative</option>
                     <option value="Salesperson">Salesperson</option>
+                    <option value="Scientist">Scientist</option>
                     <option value="Software Engineer">Software Engineer</option>
                     <option value="Teacher">Teacher</option>
                 </select>
@@ -90,13 +190,17 @@
             </div>
 
             <div class="form-group">
-                <input class="btn btn-primary" type="submit" value="Predict Sleep Disorder" />
+                <input class="btn btn-primary btn-block" type="submit" value="Predict Sleep Disorder" />
             </div>
         </form>
 
-        <h2>
-           The prediction is: {{results}}
-        </h2>
+        <div class="prediction">
+                <p>Your predicted sleep disorder risk is: {{ results }}</p>
+        </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

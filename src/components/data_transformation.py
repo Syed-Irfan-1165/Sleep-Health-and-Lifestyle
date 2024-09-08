@@ -170,8 +170,12 @@ class DataTransformation:
                 file_path=self.data_transformation_config.preprocessor_obj_file_path,
                 obj=preprocessing_obj
             )
+            print("Preprocessing object saved at:", self.data_transformation_config.preprocessor_obj_file_path)
+            print("Preprocessor object details:", preprocessing_obj)
 
             return train_arr, test_arr, self.data_transformation_config.preprocessor_obj_file_path
             
         except Exception as e:
             raise CustomException(e, sys)
+
+
