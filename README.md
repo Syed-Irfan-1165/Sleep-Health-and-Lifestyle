@@ -153,3 +153,22 @@ To replicate the project on your local machine:
 ## Conclusion and Future Work
 
 This project successfully built a model to predict sleep disorders based on lifestyle data.
+
+## Application Screenshots
+
+### Before Entering Values
+
+<img width="1724" alt="Screenshot 2024-10-06 at 9 33 17 PM" src="https://github.com/user-attachments/assets/763cead4-3faa-4061-8f95-a2401771af59">
+
+<img width="1728" alt="Screenshot 2024-10-06 at 9 33 28 PM" src="https://github.com/user-attachments/assets/687f2527-8989-42cb-8c03-13c0138d8d77">
+
+### After Entering Values
+
+<img width="1728" alt="Screenshot 2024-10-06 at 9 36 14 PM" src="https://github.com/user-attachments/assets/b68507f1-6b74-4289-93c4-6ed52e3e5bb4">
+
+<img width="1728" alt="Screenshot 2024-10-06 at 9 50 54 PM" src="https://github.com/user-attachments/assets/1669aafe-9491-4a40-96e6-06dcf2d048d4">
+
+### Prediction Results
+
+<img width="1728" alt="Screenshot 2024-10-06 at 9 35 12 PM" src="https://github.com/user-attachments/assets/9b6cdd8d-00bf-4aee-a72c-35f1e513d0f8">
+
